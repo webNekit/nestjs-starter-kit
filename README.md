@@ -171,7 +171,7 @@
 
 1.  **Клонируйте репозиторий:**
     ```bash
-    git clone https://github.com/your-username/nestjs-senior-starter.git
+    git clone https://github.com/webNekit/nestjs-starter-kit.git
     cd nestjs-senior-starter
     ```
 

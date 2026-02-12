@@ -98,13 +98,13 @@ export class AuthController {
         res.cookie('refresh_token', tokens.refreshToken, {
             ...cookieOptions,
             maxAge: 7 * 24 * 3600 * 1000,
-            path: '/api/auth'
+            path: '/'
         });
     }
 
     private clearCookies(res: Response) {
         const domain = this.configService.get('COOKIE_DOMAIN') === 'localhost' ? undefined : this.configService.get('COOKIE_DOMAIN');
         res.clearCookie('access_token', {path: '/', domain});
-        res.clearCookie('refresh_token', {path: '/api/auth', domain});
+        res.clearCookie('refresh_token', {path: '/', domain});
     }
 }

@@ -82,7 +82,7 @@ export class AuthController {
     async refresh(@CurrentUser() user: any, @Res({ passthrough: true }) res: Response) {
         const tokens = await this.authService.refresh(user.userId, user.refreshToken);
         this.setCookies(res, tokens);
-        return { message: 'Токены обновлены' };
+        return { accessToken: tokens.accessToken };
     }
 
     private setCookies(res: Response, tokens: TokenPair) {

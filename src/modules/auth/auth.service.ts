@@ -57,13 +57,22 @@ export class AuthService {
     async refresh(userId: string, refreshToken: string) {
         const user = await this.prismaService.user.findUnique({ where: { id: userId } });
         if (!user || !user.refreshToken) throw new UnauthorizedException('Access Denied');
-
+    
         const isValid = await verifyString(user.refreshToken, refreshToken);
         if (!isValid) throw new UnauthorizedException('Invalid Refresh Token');
-
-        return this.generateToken(user.id, user.email, user.role);
+    
+        const payload = { sub: user.id, email: user.email, role: user.role };
+    
+        const newAccessToken = await this.jwtService.signAsync(payload, {
+            secret: this.configService.get('JWT_ACCESS_SECRET'),
+            expiresIn: this.configService.get('JWT_ACCESS_EXPIRES_IN'),
+        });
+    
+        return { 
+            accessToken: newAccessToken, 
+            refreshToken: refreshToken,
+        };
     }
-
     private sanitizeUser(user: User) {
         return {
             id: user.id,
